@@ -331,9 +331,9 @@ public class MainApp extends JFrame {
                 statusLabel.setForeground(Colors.SUCCESS);
                 Display.showMessage(this, Settings.STATUS_OK, Settings.STATUS_DONE, JOptionPane.INFORMATION_MESSAGE);
             } else {
-                statusLabel.setText("โหลดไฟล์ไม่สำเร็จ");
+                statusLabel.setText(Settings.STATUS_FAIL);
                 statusLabel.setForeground(Colors.DANGER);
-                Display.showMessage(this, "ข้อผิดพลาด", "ไม่สามารถโหลดไฟล์ได้ กรุณาตรวจสอบรูปแบบไฟล์", JOptionPane.ERROR_MESSAGE);
+                Display.showMessage(this, Settings.STATUS_ERROR, Settings.STATUS_CHECK, JOptionPane.ERROR_MESSAGE);
             }
         }
 
@@ -374,8 +374,8 @@ public class MainApp extends JFrame {
 
     private void calculate() {
         if (!hasData()) {
-            Display.showMessage(this, "กรุณาโหลดไฟล์ก่อน", "คุณต้องโหลดไฟล์ dept.txt ก่อนคำนวณ", JOptionPane.WARNING_MESSAGE);
-            statusLabel.setText("ยังไม่มีข้อมูลไฟล์");
+            Display.showMessage(this, Settings.LANG_WARNING, Settings.LANG_WARNING2, JOptionPane.WARNING_MESSAGE);
+            statusLabel.setText(Settings.LANG_WARNING3);
             statusLabel.setForeground(Colors.DANGER);
             return;
         }
@@ -384,11 +384,11 @@ public class MainApp extends JFrame {
             double water = Double.parseDouble(waterInput.getText());
             data.setWater(water);
             updateDisplay();
-            statusLabel.setText("คำนวณเสร็จสิ้น");
+            statusLabel.setText(Settings.LANG_WARNING4);
             statusLabel.setForeground(Colors.SUCCESS);
         } catch (NumberFormatException e) {
-            Display.showMessage(this, "ข้อผิดพลาดการป้อนข้อมูล", "กรุณาป้อนตัวเลขที่ถูกต้อง", JOptionPane.ERROR_MESSAGE);
-            statusLabel.setText("ข้อมูลไม่ถูกต้อง");
+            Display.showMessage(this, Settings.LANG_WARNING5, Settings.LANG_WARNING6, JOptionPane.ERROR_MESSAGE);
+            statusLabel.setText(Settings.LANG_WARNING7);
             statusLabel.setForeground(Colors.DANGER);
         }
     }
