@@ -12,6 +12,9 @@ public class MainApp extends JFrame {
     private JTextField waterInput;
     private JLabel totalLabel;
     private JLabel statusLabel;
+    private JButton loadButton;
+    private JButton clearButton;
+    private JPanel buttonPanel;
 
     public MainApp() {
         setupLook();
@@ -159,10 +162,23 @@ public class MainApp extends JFrame {
         calc.setAlignmentX(Component.LEFT_ALIGNMENT);
         calc.addActionListener(e -> calculate());
 
-        JButton load = ButtonHelper.createButton(Settings.BTN_LOAD, Colors.SUCCESS_GREEN, 280, 50);
-        load.setMaximumSize(new Dimension(280, 50));
-        load.setAlignmentX(Component.LEFT_ALIGNMENT);
-        load.addActionListener(e -> openFile());
+        // Create buttons but don't add them yet
+        loadButton = ButtonHelper.createButton(Settings.BTN_LOAD, Colors.SUCCESS_GREEN, 280, 50);
+        loadButton.setMaximumSize(new Dimension(280, 50));
+        loadButton.setAlignmentX(Component.LEFT_ALIGNMENT);
+        loadButton.addActionListener(e -> openFile());
+
+        clearButton = ButtonHelper.createButton(Settings.BTN_CLEAR, Colors.DANGER_RED, 280, 50);
+        clearButton.setMaximumSize(new Dimension(280, 50));
+        clearButton.setAlignmentX(Component.LEFT_ALIGNMENT);
+        clearButton.addActionListener(e -> clearFile());
+
+        // Create a panel for dynamic button switching
+        buttonPanel = new JPanel();
+        buttonPanel.setLayout(new BoxLayout(buttonPanel, BoxLayout.Y_AXIS));
+        buttonPanel.setOpaque(false);
+        buttonPanel.setMaximumSize(new Dimension(280, 50));
+        buttonPanel.setAlignmentX(Component.LEFT_ALIGNMENT);
 
         panel.add(label);
         panel.add(Box.createVerticalStrut(10));
@@ -170,7 +186,7 @@ public class MainApp extends JFrame {
         panel.add(Box.createVerticalStrut(20));
         panel.add(calc);
         panel.add(Box.createVerticalStrut(15));
-        panel.add(load);
+        panel.add(buttonPanel);
 
         return panel;
     }
@@ -329,7 +345,7 @@ public class MainApp extends JFrame {
                 updateDisplay();
                 statusLabel.setText(Settings.STATUS_LOAD + file.getName());
                 statusLabel.setForeground(Colors.SUCCESS);
-                Display.showMessage(this, Settings.STATUS_OK, Settings.STATUS_DONE, JOptionPane.INFORMATION_MESSAGE);
+             
             } else {
                 statusLabel.setText(Settings.STATUS_FAIL);
                 statusLabel.setForeground(Colors.DANGER);
@@ -393,10 +409,33 @@ public class MainApp extends JFrame {
         }
     }
 
+    private void clearFile() {
+        data.clearData();
+        waterInput.setText(String.valueOf(Settings.DEFAULT_FLUID));
+        updateDisplay();
+        updateButtonDisplay();
+        statusLabel.setText("File cleared");
+        statusLabel.setForeground(Colors.TEXT_LIGHT);
+    }
+
+    private void updateButtonDisplay() {
+        buttonPanel.removeAll();
+        
+        if (hasData()) {
+            buttonPanel.add(clearButton);
+        } else {
+            buttonPanel.add(loadButton);
+        }
+        
+        buttonPanel.revalidate();
+        buttonPanel.repaint();
+    }
+
     private void updateDisplay() {
         double total = data.getTotalVolume();
         totalLabel.setText(String.format(Settings.TOTAL_GAS, total));
         grid.refresh();
+        updateButtonDisplay();
     }
 
     private void exitApp(){

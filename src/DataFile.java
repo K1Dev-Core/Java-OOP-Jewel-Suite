@@ -115,4 +115,11 @@ public class DataFile {
     public int getCols() {
         return cols;
     }
+
+    public void clearData() {
+        this.numbers = new double[0][0];
+        this.rows = 0;
+        this.cols = 0;
+        this.water = Settings.DEFAULT_FLUID;
+    }
 }

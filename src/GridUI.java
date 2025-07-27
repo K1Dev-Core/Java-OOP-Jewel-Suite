@@ -8,13 +8,18 @@ import java.awt.event.MouseEvent;
 import java.io.File;
 import java.util.List;
 
-
 public class GridUI extends JPanel {
 
     private DataFile data;
     private boolean hasData = false;
     private DropTarget dropBox;
     private FileDropper dropper;
+    private int hoverRow = -1;
+    private int hoverCol = -1;
+    private javax.swing.Timer animationTimer;
+    private float hoverAlpha = 0.0f;
+    private JLabel tooltipLabel;
+    private boolean showTooltip = false;
 
     public GridUI(DataFile d) {
         this.data = d;
@@ -22,17 +27,48 @@ public class GridUI extends JPanel {
 
         setOpaque(true);
         setBackground(Colors.BG_PANEL);
+        setLayout(null); // Use absolute positioning for tooltip
         updateSize();
+        
+        // Create tooltip label
+        tooltipLabel = new JLabel();
+        tooltipLabel.setFont(new Font("Tahoma", Font.PLAIN, 11));
+        tooltipLabel.setForeground(Colors.TEXT_DARK);
+        tooltipLabel.setBackground(new Color(255, 255, 220, 240));
+        tooltipLabel.setOpaque(true);
+        tooltipLabel.setBorder(BorderFactory.createCompoundBorder(
+            BorderFactory.createLineBorder(Colors.BORDER_DARK, 1),
+            BorderFactory.createEmptyBorder(4, 8, 4, 8)
+        ));
+        tooltipLabel.setVisible(false);
+        add(tooltipLabel);
 
         addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
                 if (hasData) {
                     showCellInfo(e.getX(), e.getY());
-
                 }
             }
 
+            @Override
+            public void mouseExited(MouseEvent e) {
+                hoverRow = -1;
+                hoverCol = -1;
+                startFadeAnimation(false);
+                hideTooltip();
+            }
+        });
+
+        addMouseMotionListener(new MouseAdapter() {
+            @Override
+            public void mouseMoved(MouseEvent e) {
+                if (hasData) {
+                    updateHoverCell(e.getX(), e.getY());
+                } else {
+                    hideTooltip();
+                }
+            }
         });
 
         setupDrop();
@@ -52,6 +88,87 @@ public class GridUI extends JPanel {
     private void setupDrop() {
         dropper = new FileDropper();
         dropBox = new DropTarget(this, dropper);
+    }
+
+    private void updateHoverCell(int mx, int my) {
+        int startX = 15;
+        int startY = 15;
+
+        int newCol = (mx - startX) / Settings.CELL_DRAW;
+        int newRow = (my - startY) / Settings.CELL_DRAW;
+
+        if (newRow >= 0 && newRow < data.getRows() && newCol >= 0 && newCol < data.getCols()) {
+            if (newRow != hoverRow || newCol != hoverCol) {
+                hoverRow = newRow;
+                hoverCol = newCol;
+                startFadeAnimation(true);
+                showTooltipInfo(mx, my, newRow, newCol);
+            }
+        } else {
+            if (hoverRow != -1 || hoverCol != -1) {
+                hoverRow = -1;
+                hoverCol = -1;
+                startFadeAnimation(false);
+                hideTooltip();
+            }
+        }
+    }
+
+    private void startFadeAnimation(boolean fadeIn) {
+        if (animationTimer != null && animationTimer.isRunning()) {
+            animationTimer.stop();
+        }
+
+        animationTimer = new javax.swing.Timer(16, e -> {
+            if (fadeIn) {
+                hoverAlpha = Math.min(1.0f, hoverAlpha + 0.1f);
+                if (hoverAlpha >= 1.0f) {
+                    animationTimer.stop();
+                }
+            } else {
+                hoverAlpha = Math.max(0.0f, hoverAlpha - 0.15f);
+                if (hoverAlpha <= 0.0f) {
+                    animationTimer.stop();
+                }
+            }
+            repaint();
+        });
+        animationTimer.start();
+    }
+
+    private void showTooltipInfo(int mx, int my, int row, int col) {
+        double vol = data.getVolume(row, col);
+        double per = data.getPercent(row, col) * 100;
+        
+        String tooltipText = String.format("<html>Cell [%d,%d]<br/>Vol: %.0f m³<br/>Gas: %.1f%%</html>", 
+                                         row + 1, col + 1, vol, per);
+        
+        tooltipLabel.setText(tooltipText);
+        
+        // Calculate tooltip position
+        int tooltipX = mx + 15;
+        int tooltipY = my - 10;
+        
+        // Adjust if tooltip goes outside panel bounds
+        Dimension tooltipSize = tooltipLabel.getPreferredSize();
+        if (tooltipX + tooltipSize.width > getWidth()) {
+            tooltipX = mx - tooltipSize.width - 15;
+        }
+        if (tooltipY < 0) {
+            tooltipY = my + 25;
+        }
+        if (tooltipY + tooltipSize.height > getHeight()) {
+            tooltipY = getHeight() - tooltipSize.height - 5;
+        }
+        
+        tooltipLabel.setBounds(tooltipX, tooltipY, tooltipSize.width, tooltipSize.height);
+        tooltipLabel.setVisible(true);
+        showTooltip = true;
+    }
+
+    private void hideTooltip() {
+        tooltipLabel.setVisible(false);
+        showTooltip = false;
     }
 
     @Override
@@ -87,6 +204,19 @@ public class GridUI extends JPanel {
                 Color cellColor = getCellColor(r, c);
                 g2.setColor(cellColor);
                 g2.fillRect(x, y, Settings.CELL_DRAW-2, Settings.CELL_DRAW-2);
+
+                // Draw hover effect
+                if (r == hoverRow && c == hoverCol && hoverAlpha > 0) {
+                    Color hoverColor = new Color(255, 255, 255, (int)(hoverAlpha * 80));
+                    g2.setColor(hoverColor);
+                    g2.fillRect(x, y, Settings.CELL_DRAW-2, Settings.CELL_DRAW-2);
+                    
+                    // Add glow effect
+                    Color glowColor = new Color(255, 255, 255, (int)(hoverAlpha * 120));
+                    g2.setColor(glowColor);
+                    g2.setStroke(new BasicStroke(2.0f));
+                    g2.drawRect(x-1, y-1, Settings.CELL_DRAW, Settings.CELL_DRAW);
+                }
 
                 g2.setColor(Color.WHITE);
                 g2.setStroke(new BasicStroke(1.0f));
@@ -139,7 +269,6 @@ public class GridUI extends JPanel {
         return Colors.GREEN;
     }
 
-
     private void showCellInfo(int mx, int my) {
         int startX = 15;
         int startY = 15;
@@ -169,6 +298,10 @@ public class GridUI extends JPanel {
 
     public void refresh() {
         this.hasData = (data.getRows() > 0 && data.getCols() > 0);
+        hideTooltip();
+        hoverRow = -1;
+        hoverCol = -1;
+        hoverAlpha = 0.0f;
         updateSize();
         revalidate();
         repaint();

@@ -38,6 +38,7 @@ public class Settings {
     public static final String INPUT_LABEL = "Liquid depth (M.)";
     public static final String BTN_CALC = "Calculate";
     public static final String BTN_LOAD = "Load File";
+    public static final String BTN_CLEAR = "Clear File";
 
     //makeLegendPane
     public static final String LEGEND_TITLE = "Description";
