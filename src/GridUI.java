@@ -153,13 +153,7 @@ public class GridUI extends JPanel {
             double top = data.getTop(r, c);
             double bottom = data.getBottom(r, c);
 
-            String info = String.format(
-                    "ช่อง: [%d, %d]\n" +
-                            "ชั้นบน: %.1f ม.\n" +
-                            "ชั้นล่าง: %.1f ม.\n" +
-                            "ปริมาตร: %.0f ลบ.ม.\n" +
-                            "แก๊ส: %.1f%%\n" +
-                            "สถานะ: %s",
+            String info = String.format(Settings.INFO,
                     r+1, c+1, top, bottom, vol, per,
                     getStatusText(data.getLevel(r, c))
             );
@@ -168,9 +162,9 @@ public class GridUI extends JPanel {
     }
 
     private String getStatusText(int level) {
-        if (level == 0) return "ไม่มีแก๊ส";
-        if (level == 1) return "แก๊สน้อย";
-        return "แก๊สมาก";
+        if (level == 0) return Settings.GAS1;
+        if (level == 1) return Settings.GAS2;
+        return Settings.GAS3;
     }
 
     public void refresh() {

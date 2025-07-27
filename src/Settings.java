@@ -92,4 +92,20 @@ public class Settings {
     public static final String ID3 = "67011212143";
     public static final String JOB3 = "UI/UX Designer";
     public static final String IMG3 = "src/res/team/member3.png";
+
+    //GridUI
+    public static final String INFO =
+            "Channel: [%d, %d]\n" +
+            "Upper Floor: %.1f m3\n" +
+            "Lower Floor: %.1f m3\n" +
+            "Volume: %.0f m3\n" +
+            "Gas: %.1f%%\n" +
+            "Status: %s";
+    public static final String GAS1 = "No Gas";
+    public static final String GAS2 = "Little Gas";
+    public static final String GAS3 = "Too Much Gas";
+
+    //showAbout
+    public static final String ABOUT_TITLE = "BY C++ TEAM";
+    public static final String ABOUT_DISTRIBUTION = "Gas distribution simulation system";
 }

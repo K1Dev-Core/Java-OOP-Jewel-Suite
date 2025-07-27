@@ -43,11 +43,11 @@ public class Display {
         main.setOpaque(true);
         main.setBorder(new EmptyBorder(35, 35, 35, 35));
 
-        JLabel title = new JLabel("Jewel Suite", SwingConstants.CENTER);
+        JLabel title = new JLabel(Settings.ABOUT_TITLE, SwingConstants.CENTER);
         title.setFont(new Font("Tahoma", Font.BOLD, 32));
         title.setForeground(Colors.BLUE);
 
-        JLabel subtitle = new JLabel("ระบบจำลองการกระจายตัวของแก๊ส", SwingConstants.CENTER);
+        JLabel subtitle = new JLabel(Settings.ABOUT_DISTRIBUTION, SwingConstants.CENTER);
         subtitle.setFont(new Font("Tahoma", Font.PLAIN, 16));
         subtitle.setForeground(Colors.TEXT_LIGHT);
 
