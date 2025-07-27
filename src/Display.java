@@ -91,7 +91,7 @@ public class Display {
         buttons.setBorder(new EmptyBorder(20, 0, 0, 0));
         buttons.setOpaque(true);
 
-        JButton close = ButtonHelper.createButton("ปิด", Colors.DANGER, 100, 45);
+        JButton close = ButtonHelper.createButton(Settings.BTN_CLOSE_ABOUT, Colors.DANGER, 100, 45);
         close.addActionListener(e -> aboutBox.dispose());
         buttons.add(close);
 

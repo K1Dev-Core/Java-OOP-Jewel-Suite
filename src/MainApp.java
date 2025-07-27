@@ -318,8 +318,8 @@ public class MainApp extends JFrame {
         setupFileChooser();
 
         JFileChooser fc = new JFileChooser();
-        fc.setDialogTitle("เลือกไฟล์ dept.txt");
-        fc.setFileFilter(new FileNameExtensionFilter("ไฟล์ข้อความ (*.txt)", "txt"));
+        fc.setDialogTitle(Settings.SELECT_FILE_TITLE);
+        fc.setFileFilter(new FileNameExtensionFilter(Settings.FILE_OF_TYPE, "txt"));
         fc.setCurrentDirectory(new File("src"));
 
         int result = fc.showOpenDialog(this);

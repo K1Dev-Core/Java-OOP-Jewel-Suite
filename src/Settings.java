@@ -12,7 +12,7 @@ public class Settings {
     public static final int WIN_W = 1350;
     public static final int WIN_H = 800;
     public static final int CELL_DRAW = 40;
-    public static final Boolean WINDOW_MENU = true;
+    public static final Boolean WINDOW_MENU = false;
 
     public static final Font BIG_FONT = new Font("Tahoma", Font.BOLD, 26);
     public static final Font MID_FONT = new Font("Tahoma", Font.PLAIN, 14);
@@ -25,6 +25,7 @@ public class Settings {
 
     public static final String APP_TITLE = "Jewel Suite";
     public static final String BTN_ABOUT = "About";
+    public static final String BTN_CLOSE_ABOUT = "CLOSE";
     public static final String BTN_EXIT = "Exit";
     public static final String EXIT_TITLE = "Exit Confirmation";
     public static final String EXIT_MSG = "Are you sure you want to exit?";
@@ -48,6 +49,8 @@ public class Settings {
     public static final String GRID_INFO = "Click the file or drag and drop the dept.txt file.";
     public static final String FILE_TITLE = "Place the dept.txt file here";
     public static final String FILE_SUB = "or click to select file";
+    public static final String SELECT_FILE_TITLE = "Select file dept.txt";
+    public static final String FILE_OF_TYPE = "File Type (*.txt)";
 
     public static final String MEMBER1 = "วชิรวิทย์ วงค์แสง";
     public static final String ID1 = "67011212055";
@@ -59,8 +62,8 @@ public class Settings {
     public static final String JOB2 = "Lead Developer";
     public static final String IMG2 = "src/res/team/member2.jpg";
 
-    public static final String MEMBER3= "นางสาวสมหญิง";
-    public static final String ID3 = "2138";
+    public static final String MEMBER3= "นางสาวเศรณี ภูนาโพธิ์";
+    public static final String ID3 = "67011212143";
     public static final String JOB3 = "UI/UX Designer";
     public static final String IMG3 = "src/res/team/member3.png";
 }
