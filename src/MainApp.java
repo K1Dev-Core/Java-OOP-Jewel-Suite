@@ -127,11 +127,11 @@ public class MainApp extends JFrame {
         right.setOpaque(false);
 
         JButton about = ButtonHelper.createButton(Settings.BTN_ABOUT, Colors.ORANGE, 100, 45,
-                "src/res/icons/about.png");
+               Settings.ICON_BTN_ABOUT);
         about.addActionListener(e -> Display.showAbout(this));
 
         JButton exit = ButtonHelper.createButton(Settings.BTN_EXIT, Colors.DANGER_RED, 100, 45,
-                "src/res/icons/exit.png");
+                "");
         exit.addActionListener(e -> exitApp());
 
         right.add(about);

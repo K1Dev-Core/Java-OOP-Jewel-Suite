@@ -28,6 +28,7 @@ public class Settings {
     public static final String ICON_BTN_CALC = "src/res/icons/synergy.png";
     public static final String ICON_BTN_LOAD = "src/res/icons/folder.png";
     public static final String ICON_BTN_CLEAR = "src/res/icons/clear-format.png";
+    public static final String ICON_BTN_ABOUT = "";
     
 
     //TOP
