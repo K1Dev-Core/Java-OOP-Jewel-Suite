@@ -25,20 +25,34 @@ public class GridUI extends JPanel {
         this.data = d;
         this.hasData = (data.getRows() > 0 && data.getCols() > 0);
 
-        setOpaque(true);
-        setBackground(Colors.BG_PANEL);
+        setOpaque(false);
         setLayout(null);
         updateSize();
 
-        tooltipLabel = new JLabel();
-        tooltipLabel.setFont(new Font("Tahoma", Font.PLAIN, 11));
+        tooltipLabel = new JLabel() {
+            @Override
+            protected void paintComponent(Graphics g) {
+                Graphics2D g2 = (Graphics2D) g.create();
+                g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+                
+                g2.setColor(new Color(0, 0, 0, 20));
+                g2.fillRoundRect(1, 2, getWidth()-2, getHeight()-2, 12, 12);
+                
+                g2.setColor(new Color(255, 255, 255, 240));
+                g2.fillRoundRect(0, 0, getWidth(), getHeight(), 12, 12);
+                
+                g2.setColor(new Color(200, 200, 200, 100));
+                g2.setStroke(new BasicStroke(1.0f));
+                g2.drawRoundRect(0, 0, getWidth()-1, getHeight()-1, 12, 12);
+                
+                super.paintComponent(g);
+                g2.dispose();
+            }
+        };
+        tooltipLabel.setFont(new Font("SF Pro Display", Font.PLAIN, 12));
         tooltipLabel.setForeground(Colors.TEXT_DARK);
-        tooltipLabel.setBackground(new Color(255, 255, 220, 240));
-        tooltipLabel.setOpaque(true);
-        tooltipLabel.setBorder(BorderFactory.createCompoundBorder(
-            BorderFactory.createLineBorder(Colors.BORDER_DARK, 1),
-            BorderFactory.createEmptyBorder(4, 8, 4, 8)
-        ));
+        tooltipLabel.setOpaque(false);
+        tooltipLabel.setBorder(BorderFactory.createEmptyBorder(8, 12, 8, 12));
         tooltipLabel.setVisible(false);
         add(tooltipLabel);
 
@@ -171,10 +185,14 @@ public class GridUI extends JPanel {
 
     @Override
     protected void paintComponent(Graphics g) {
-        super.paintComponent(g);
-
         Graphics2D g2 = (Graphics2D) g.create();
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+
+        g2.setColor(Colors.BG_PANEL);
+        g2.fillRoundRect(0, 0, getWidth(), getHeight(), 20, 20);
+        
+        g2.setColor(new Color(255, 255, 255, 60));
+        g2.fillRoundRect(1, 1, getWidth()-2, getHeight()/3, 19, 19);
 
         if (hasData) {
             drawGrid(g2);
@@ -189,10 +207,10 @@ public class GridUI extends JPanel {
         int startX = 15;
         int startY = 15;
 
-        g2.setColor(Colors.BORDER_LIGHT);
-        g2.fillRect(startX-5, startY-5,
+        g2.setColor(new Color(240, 240, 240, 100));
+        g2.fillRoundRect(startX-5, startY-5,
                 Settings.GRID_W * Settings.CELL_DRAW + 10,
-                Settings.GRID_H * Settings.CELL_DRAW + 10);
+                Settings.GRID_H * Settings.CELL_DRAW + 10, 12, 12);
 
         for (int r = 0; r < data.getRows(); r++) {
             for (int c = 0; c < data.getCols(); c++) {
@@ -201,23 +219,22 @@ public class GridUI extends JPanel {
 
                 Color cellColor = getCellColor(r, c);
                 g2.setColor(cellColor);
-                g2.fillRect(x, y, Settings.CELL_DRAW-2, Settings.CELL_DRAW-2);
-
+                g2.fillRoundRect(x, y, Settings.CELL_DRAW-2, Settings.CELL_DRAW-2, 6, 6);
 
                 if (r == hoverRow && c == hoverCol && hoverAlpha > 0) {
-                    Color hoverColor = new Color(255, 255, 255, (int)(hoverAlpha * 80));
+                    Color hoverColor = new Color(255, 255, 255, (int)(hoverAlpha * 100));
                     g2.setColor(hoverColor);
-                    g2.fillRect(x, y, Settings.CELL_DRAW-2, Settings.CELL_DRAW-2);
+                    g2.fillRoundRect(x, y, Settings.CELL_DRAW-2, Settings.CELL_DRAW-2, 6, 6);
                     
-                    Color glowColor = new Color(255, 255, 255, (int)(hoverAlpha * 120));
+                    Color glowColor = new Color(Colors.BLUE.getRed(), Colors.BLUE.getGreen(), Colors.BLUE.getBlue(), (int)(hoverAlpha * 150));
                     g2.setColor(glowColor);
                     g2.setStroke(new BasicStroke(2.0f));
-                    g2.drawRect(x-1, y-1, Settings.CELL_DRAW, Settings.CELL_DRAW);
+                    g2.drawRoundRect(x-1, y-1, Settings.CELL_DRAW, Settings.CELL_DRAW, 8, 8);
                 }
 
-                g2.setColor(Color.WHITE);
+                g2.setColor(new Color(255, 255, 255, 120));
                 g2.setStroke(new BasicStroke(1.0f));
-                g2.drawRect(x, y, Settings.CELL_DRAW-2, Settings.CELL_DRAW-2);
+                g2.drawRoundRect(x, y, Settings.CELL_DRAW-2, Settings.CELL_DRAW-2, 6, 6);
             }
         }
     }
@@ -226,15 +243,12 @@ public class GridUI extends JPanel {
         int w = getWidth();
         int h = getHeight();
 
-        g2.setColor(Colors.BG_MAIN);
-        g2.fillRect(0, 0, w, h);
+        g2.setColor(Colors.BLUE);
+        g2.setStroke(new BasicStroke(2.0f, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND, 0, new float[]{12, 8}, 0));
+        g2.drawRoundRect(30, 30, w-60, h-60, 20, 20);
 
         g2.setColor(Colors.BLUE);
-        g2.setStroke(new BasicStroke(2.0f, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND, 0, new float[]{10, 10}, 0));
-        g2.drawRect(20, 20, w-40, h-40);
-
-        g2.setColor(Colors.BLUE);
-        Font iconFont = new Font("Dialog", Font.BOLD, 48);
+        Font iconFont = new Font("SF Pro Display", Font.PLAIN, 48);
         g2.setFont(iconFont);
         String icon = "📁";
         FontMetrics fm = g2.getFontMetrics();
@@ -243,7 +257,7 @@ public class GridUI extends JPanel {
         g2.drawString(icon, iconX, iconY);
 
         g2.setColor(Colors.TEXT_DARK);
-        g2.setFont(Settings.MID_FONT);
+        g2.setFont(new Font("SF Pro Display", Font.BOLD, 16));
         String title = Settings.FILE_TITLE;
         fm = g2.getFontMetrics();
         int titleX = (w - fm.stringWidth(title)) / 2;
@@ -251,7 +265,7 @@ public class GridUI extends JPanel {
         g2.drawString(title, titleX, titleY);
 
         g2.setColor(Colors.TEXT_LIGHT);
-        g2.setFont(Settings.SMALL_FONT);
+        g2.setFont(new Font("SF Pro Display", Font.PLAIN, 14));
         String sub = Settings.FILE_SUB;
         fm = g2.getFontMetrics();
         int subX = (w - fm.stringWidth(sub)) / 2;

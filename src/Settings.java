@@ -23,7 +23,7 @@ public class Settings {
     public static final Font TINY_FONT = new Font("Tahoma", Font.PLAIN, 11);
 
     //icon
-    public static final String APP_ICON_PATH = "src/res/icon.png";
+    public static final String APP_ICON_PATH = "./src/res/icon.png";
     public static final int ICON_SIZE_SMALL = 96;
     public static final String ICON_BTN_CALC = "src/res/icons/synergy.png";
     public static final String ICON_BTN_LOAD = "src/res/icons/folder.png";

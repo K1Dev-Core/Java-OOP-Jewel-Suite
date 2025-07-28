@@ -18,15 +18,13 @@ public class ButtonHelper {
     private static class CustomButton extends JButton {
         private boolean isHover = false;
         private boolean isPressed = false;
-        private float shadowAlpha = 0.3f;
         private Color bgColor;
         private ImageIcon buttonIcon;
 
         public CustomButton(String text, Color bgColor, int width, int height, String iconPath) {
             super(text);
             this.bgColor = bgColor;
-            
-            // Load icon if path is provided
+
             if (iconPath != null && new File(iconPath).exists()) {
                 try {
                     ImageIcon originalIcon = new ImageIcon(iconPath);
@@ -36,19 +34,18 @@ public class ButtonHelper {
                     setHorizontalTextPosition(SwingConstants.RIGHT);
                     setIconTextGap(10);
                 } catch (Exception e) {
-                    // If icon loading fails, continue without icon
                     buttonIcon = null;
                 }
             }
 
             setPreferredSize(new Dimension(width, height));
-            setFont(new Font("Segoe UI", Font.BOLD, 13));
-            setForeground(isLightColor(bgColor) ? new Color(60, 60, 60) : Color.WHITE);
+            setFont(new Font("SF Pro Display", Font.PLAIN, 14));
+            setForeground(Color.WHITE);
             setFocusPainted(false);
             setBorderPainted(false);
             setContentAreaFilled(false);
             setCursor(new Cursor(Cursor.HAND_CURSOR));
-            setBorder(new EmptyBorder(8, 16, 8, 16));
+            setBorder(new EmptyBorder(12, 20, 12, 20));
 
             addMouseListener(new MouseAdapter() {
                 @Override
@@ -85,61 +82,24 @@ public class ButtonHelper {
             int w = getWidth();
             int h = getHeight();
 
-            if (isPressed) {
-                w -= 2;
-                h -= 2;
-                g2.translate(1, 1);
-            }
+            Color currentBg = new Color(bgColor.getRed(), bgColor.getGreen(), bgColor.getBlue(), 
+                isPressed ? 200 : (isHover ? 220 : 180));
 
-            if (!isPressed) {
-                g2.setColor(new Color(0, 0, 0, (int)(shadowAlpha * 255 * (isHover ? 0.6f : 0.4f))));
-                g2.fillRoundRect(2, 2, w-2, h-2, 8, 8);
-            }
+            g2.setColor(new Color(0, 0, 0, 20));
+            g2.fillRoundRect(1, 2, w-2, h-2, 16, 16);
 
-            Color currentBg = bgColor;
-            if (isHover && !isPressed) {
-                currentBg = brighten(bgColor, 0.1f);
-            } else if (isPressed) {
-                currentBg = darken(bgColor, 0.1f);
-            }
+            g2.setColor(currentBg);
+            g2.fillRoundRect(0, 0, w, h, 16, 16);
 
-            GradientPaint gradient = new GradientPaint(
-                    0, 0, brighten(currentBg, 0.05f),
-                    0, h, darken(currentBg, 0.05f)
-            );
-            g2.setPaint(gradient);
-            g2.fillRoundRect(0, 0, w, h, 8, 8);
+            g2.setColor(new Color(255, 255, 255, isHover ? 40 : 20));
+            g2.fillRoundRect(1, 1, w-2, h/2, 15, 15);
 
-            g2.setColor(darken(currentBg, 0.2f));
-            g2.setStroke(new BasicStroke(1.5f));
-            g2.drawRoundRect(0, 0, w-1, h-1, 8, 8);
-
-            if (isHover) {
-                g2.setColor(new Color(255, 255, 255, 20));
-                g2.fillRoundRect(1, 1, w-2, h/3, 6, 6);
-            }
+            g2.setColor(new Color(255, 255, 255, 30));
+            g2.setStroke(new BasicStroke(1.0f));
+            g2.drawRoundRect(0, 0, w-1, h-1, 16, 16);
 
             super.paintComponent(g);
             g2.dispose();
         }
-
-        private Color brighten(Color color, float factor) {
-            int r = Math.min(255, (int)(color.getRed() * (1 + factor)));
-            int g = Math.min(255, (int)(color.getGreen() * (1 + factor)));
-            int b = Math.min(255, (int)(color.getBlue() * (1 + factor)));
-            return new Color(r, g, b);
-        }
-
-        private Color darken(Color color, float factor) {
-            int r = Math.max(0, (int)(color.getRed() * (1 - factor)));
-            int g = Math.max(0, (int)(color.getGreen() * (1 - factor)));
-            int b = Math.max(0, (int)(color.getBlue() * (1 - factor)));
-            return new Color(r, g, b);
-        }
-    }
-
-    private static boolean isLightColor(Color color) {
-        double brightness = (0.299 * color.getRed() + 0.587 * color.getGreen() + 0.114 * color.getBlue()) / 255;
-        return brightness > 0.7;
     }
 }

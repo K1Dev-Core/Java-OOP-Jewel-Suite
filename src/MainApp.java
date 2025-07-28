@@ -4,6 +4,7 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.*;
 import java.io.File;
+
 // คลาสแม่ MainApp สําหรับการจัดการหลักของโปรแกรม
 public class MainApp extends JFrame {
 
@@ -40,12 +41,30 @@ public class MainApp extends JFrame {
         setTitle(Settings.APP_TITLE);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(Settings.WIN_W, Settings.WIN_H);
+
         setLocationRelativeTo(null);
         setResizable(true);
         setUndecorated(Settings.WINDOW_MENU);
-        getContentPane().setBackground(Colors.BG_MAIN);
+        
+        JPanel backgroundPanel = new JPanel() {
+            @Override
+            protected void paintComponent(Graphics g) {
+                Graphics2D g2 = (Graphics2D) g.create();
+                g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+                
+                GradientPaint gradient = new GradientPaint(
+                    0, 0, new Color(248, 248, 248, 250),
+                    0, getHeight(), new Color(240, 240, 240, 230)
+                );
+                g2.setPaint(gradient);
+                g2.fillRect(0, 0, getWidth(), getHeight());
+                
+                g2.dispose();
+            }
+        };
+        backgroundPanel.setLayout(new BorderLayout());
+        setContentPane(backgroundPanel);
     }
-
 
     private void makeContent() {
         JPanel main = new JPanel(new BorderLayout());
@@ -55,29 +74,43 @@ public class MainApp extends JFrame {
         makeTopBar(main);
         makeMainArea(main);
 
-        setContentPane(main);
+        getContentPane().add(main);
     }
 
     // สร้างแถบบน
     private void makeTopBar(JPanel parent) {
-        JPanel top = new JPanel(new BorderLayout());
+        JPanel top = new JPanel(new BorderLayout()) {
+            @Override
+            protected void paintComponent(Graphics g) {
+                Graphics2D g2 = (Graphics2D) g.create();
+                g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+                
+                g2.setColor(Colors.BG_PANEL);
+                g2.fillRoundRect(0, 0, getWidth(), getHeight(), 20, 20);
+                
+                g2.setColor(new Color(255, 255, 255, 60));
+                g2.fillRoundRect(1, 1, getWidth()-2, getHeight()/2, 19, 19);
+                
+                g2.setColor(Colors.BORDER_LIGHT);
+                g2.setStroke(new BasicStroke(1.0f));
+                g2.drawRoundRect(0, 0, getWidth()-1, getHeight()-1, 20, 20);
+                
+                g2.dispose();
+            }
+        };
         top.setBorder(new EmptyBorder(20, 25, 20, 25));
-        top.setBackground(Colors.BG_PANEL);
-        top.setBorder(BorderFactory.createCompoundBorder(
-                BorderFactory.createLineBorder(Colors.BORDER_LIGHT, 1),
-                new EmptyBorder(20, 25, 20, 25)
-        ));
+        top.setOpaque(false);
 
         JPanel left = new JPanel(new FlowLayout(FlowLayout.LEFT));
         left.setOpaque(false);
 
         JLabel icon = makeIcon();
         JLabel title = new JLabel(Settings.APP_TITLE);
-        title.setFont(Settings.BIG_FONT);
+        title.setFont(new Font("SF Pro Display", Font.BOLD, 28));
         title.setForeground(Colors.BLUE);
 
         JLabel version = new JLabel(Settings.APP_VERSION);
-        version.setFont(Settings.TINY_FONT);
+        version.setFont(new Font("SF Pro Display", Font.PLAIN, 12));
         version.setForeground(Colors.TEXT_LIGHT);
 
         JPanel titlePanel = new JPanel();
@@ -93,10 +126,12 @@ public class MainApp extends JFrame {
         JPanel right = new JPanel(new FlowLayout(FlowLayout.RIGHT));
         right.setOpaque(false);
 
-        JButton about = ButtonHelper.createButton(Settings.BTN_ABOUT, Colors.ORANGE, 100, 45, "src/res/icons/about.png");
+        JButton about = ButtonHelper.createButton(Settings.BTN_ABOUT, Colors.ORANGE, 100, 45,
+                "src/res/icons/about.png");
         about.addActionListener(e -> Display.showAbout(this));
 
-        JButton exit = ButtonHelper.createButton(Settings.BTN_EXIT, Colors.DANGER_RED, 100, 45, "src/res/icons/exit.png");
+        JButton exit = ButtonHelper.createButton(Settings.BTN_EXIT, Colors.DANGER_RED, 100, 45,
+                "src/res/icons/exit.png");
         exit.addActionListener(e -> exitApp());
 
         right.add(about);
@@ -108,7 +143,6 @@ public class MainApp extends JFrame {
         parent.add(top, BorderLayout.NORTH);
     }
 
-
     private void makeMainArea(JPanel parent) {
         JPanel middle = new JPanel(new BorderLayout(25, 25));
         middle.setOpaque(false);
@@ -119,19 +153,35 @@ public class MainApp extends JFrame {
 
         parent.add(middle, BorderLayout.CENTER);
     }
+
     // สร้างแถบซ้าย
     private void makeLeftPanel(JPanel parent) {
-        JPanel left = new JPanel();
+        JPanel left = new JPanel() {
+            @Override
+            protected void paintComponent(Graphics g) {
+                Graphics2D g2 = (Graphics2D) g.create();
+                g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+                
+                g2.setColor(Colors.BG_PANEL);
+                g2.fillRoundRect(0, 0, getWidth(), getHeight(), 20, 20);
+                
+                g2.setColor(new Color(255, 255, 255, 60));
+                g2.fillRoundRect(1, 1, getWidth()-2, getHeight()/3, 19, 19);
+                
+                g2.setColor(Colors.BORDER_LIGHT);
+                g2.setStroke(new BasicStroke(1.0f));
+                g2.drawRoundRect(0, 0, getWidth()-1, getHeight()-1, 20, 20);
+                
+                g2.dispose();
+            }
+        };
         left.setLayout(new BoxLayout(left, BoxLayout.Y_AXIS));
-        left.setBorder(BorderFactory.createCompoundBorder(
-                BorderFactory.createLineBorder(Colors.BORDER_LIGHT, 1),
-                new EmptyBorder(25, 25, 25, 25)
-        ));
+        left.setBorder(new EmptyBorder(25, 25, 25, 25));
         left.setPreferredSize(new Dimension(320, 0));
-        left.setBackground(Colors.BG_PANEL);
+        left.setOpaque(false);
 
         JLabel controlTitle = new JLabel("Control");
-        controlTitle.setFont(Settings.BIG_FONT);
+        controlTitle.setFont(new Font("SF Pro Display", Font.BOLD, 24));
         controlTitle.setAlignmentX(Component.LEFT_ALIGNMENT);
         controlTitle.setForeground(Colors.BLUE);
 
@@ -158,38 +208,54 @@ public class MainApp extends JFrame {
         panel.setOpaque(false);
 
         JLabel label = new JLabel(Settings.INPUT_LABEL);
-        label.setFont(Settings.MID_FONT);
+        label.setFont(new Font("SF Pro Display", Font.PLAIN, 15));
         label.setForeground(Colors.TEXT_LIGHT);
         label.setAlignmentX(Component.LEFT_ALIGNMENT);
 
-        waterInput = new JTextField(String.valueOf(data.getWater()));
+        waterInput = new JTextField(String.valueOf(data.getWater())) {
+            @Override
+            protected void paintComponent(Graphics g) {
+                Graphics2D g2 = (Graphics2D) g.create();
+                g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+                
+                g2.setColor(Colors.BG_INPUT);
+                g2.fillRoundRect(0, 0, getWidth(), getHeight(), 12, 12);
+                
+                g2.setColor(new Color(255, 255, 255, 80));
+                g2.fillRoundRect(1, 1, getWidth()-2, getHeight()/2, 11, 11);
+                
+                g2.setColor(Colors.BORDER_LIGHT);
+                g2.setStroke(new BasicStroke(1.0f));
+                g2.drawRoundRect(0, 0, getWidth()-1, getHeight()-1, 12, 12);
+                
+                super.paintComponent(g);
+                g2.dispose();
+            }
+        };
         waterInput.setMaximumSize(new Dimension(280, 45));
         waterInput.setPreferredSize(new Dimension(280, 45));
         waterInput.setAlignmentX(Component.LEFT_ALIGNMENT);
-        waterInput.setFont(Settings.MID_FONT);
-        waterInput.setBackground(Colors.BG_INPUT);
+        waterInput.setFont(new Font("SF Pro Display", Font.PLAIN, 14));
         waterInput.setForeground(Colors.TEXT_DARK);
-        waterInput.setBorder(BorderFactory.createCompoundBorder(
-                BorderFactory.createLineBorder(Colors.BORDER_DARK, 1),
-                new EmptyBorder(12, 18, 12, 18)
-        ));
+        waterInput.setOpaque(false);
+        waterInput.setBorder(new EmptyBorder(12, 18, 12, 18));
 
         JButton calc = ButtonHelper.createButton(Settings.BTN_CALC, Colors.BLUE, 280, 50, Settings.ICON_BTN_CALC);
         calc.setMaximumSize(new Dimension(280, 50));
         calc.setAlignmentX(Component.LEFT_ALIGNMENT);
         calc.addActionListener(e -> calculate());
 
-
-        loadButton = ButtonHelper.createButton(Settings.BTN_LOAD, Colors.SUCCESS_GREEN, 280, 50, Settings.ICON_BTN_LOAD);
+        loadButton = ButtonHelper.createButton(Settings.BTN_LOAD, Colors.SUCCESS_GREEN, 280, 50,
+                Settings.ICON_BTN_LOAD);
         loadButton.setMaximumSize(new Dimension(280, 50));
         loadButton.setAlignmentX(Component.LEFT_ALIGNMENT);
         loadButton.addActionListener(e -> openFile());
 
-        clearButton = ButtonHelper.createButton(Settings.BTN_CLEAR, Colors.DANGER_RED, 280, 50,Settings.ICON_BTN_CLEAR);
+        clearButton = ButtonHelper.createButton(Settings.BTN_CLEAR, Colors.DANGER_RED, 280, 50,
+                Settings.ICON_BTN_CLEAR);
         clearButton.setMaximumSize(new Dimension(280, 50));
         clearButton.setAlignmentX(Component.LEFT_ALIGNMENT);
         clearButton.addActionListener(e -> clearFile());
-
 
         buttonPanel = new JPanel();
         buttonPanel.setLayout(new BoxLayout(buttonPanel, BoxLayout.Y_AXIS));
@@ -215,7 +281,7 @@ public class MainApp extends JFrame {
         panel.setOpaque(false);
 
         JLabel title = new JLabel(Settings.LEGEND_TITLE);
-        title.setFont(Settings.MID_FONT);
+        title.setFont(new Font("SF Pro Display", Font.PLAIN, 15));
         title.setForeground(Colors.TEXT_LIGHT);
         title.setAlignmentX(Component.LEFT_ALIGNMENT);
 
@@ -239,13 +305,27 @@ public class MainApp extends JFrame {
         panel.setOpaque(false);
         panel.setMaximumSize(new Dimension(300, 30));
 
-        JPanel box = new JPanel();
+        JPanel box = new JPanel() {
+            @Override
+            protected void paintComponent(Graphics g) {
+                Graphics2D g2 = (Graphics2D) g.create();
+                g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+                
+                g2.setColor(color);
+                g2.fillRoundRect(0, 0, getWidth(), getHeight(), 8, 8);
+                
+                g2.setColor(Colors.BORDER_LIGHT);
+                g2.setStroke(new BasicStroke(1.0f));
+                g2.drawRoundRect(0, 0, getWidth()-1, getHeight()-1, 8, 8);
+                
+                g2.dispose();
+            }
+        };
         box.setPreferredSize(new Dimension(24, 24));
-        box.setBackground(color);
-        box.setBorder(BorderFactory.createLineBorder(Colors.BORDER_LIGHT, 1));
+        box.setOpaque(false);
 
         JLabel label = new JLabel(text);
-        label.setFont(Settings.MID_FONT);
+        label.setFont(new Font("SF Pro Display", Font.PLAIN, 14));
         label.setForeground(Colors.TEXT_LIGHT);
 
         panel.add(box);
@@ -262,17 +342,17 @@ public class MainApp extends JFrame {
         panel.setOpaque(false);
 
         JLabel title = new JLabel(Settings.RESULT_TITLE);
-        title.setFont(Settings.MID_FONT);
+        title.setFont(new Font("SF Pro Display", Font.PLAIN, 15));
         title.setForeground(Colors.TEXT_LIGHT);
         title.setAlignmentX(Component.LEFT_ALIGNMENT);
 
         totalLabel = new JLabel(Settings.TOTAL_GAS);
-        totalLabel.setFont(Settings.MID_FONT);
+        totalLabel.setFont(new Font("SF Pro Display", Font.BOLD, 16));
         totalLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
         totalLabel.setForeground(Colors.TEXT_DARK);
 
         statusLabel = new JLabel(Settings.STATUS_READY);
-        statusLabel.setFont(Settings.TINY_FONT);
+        statusLabel.setFont(new Font("SF Pro Display", Font.PLAIN, 13));
         statusLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
         statusLabel.setForeground(Colors.SUCCESS);
 
@@ -287,15 +367,30 @@ public class MainApp extends JFrame {
 
     // สร้างแถบขวา
     private void makeRightPanel(JPanel parent) {
-        JPanel right = new JPanel(new BorderLayout());
-        right.setBorder(BorderFactory.createCompoundBorder(
-                BorderFactory.createLineBorder(Colors.BORDER_LIGHT, 1),
-                new EmptyBorder(25, 25, 25, 25)
-        ));
-        right.setBackground(Colors.BG_PANEL);
+        JPanel right = new JPanel(new BorderLayout()) {
+            @Override
+            protected void paintComponent(Graphics g) {
+                Graphics2D g2 = (Graphics2D) g.create();
+                g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+                
+                g2.setColor(Colors.BG_PANEL);
+                g2.fillRoundRect(0, 0, getWidth(), getHeight(), 20, 20);
+                
+                g2.setColor(new Color(255, 255, 255, 60));
+                g2.fillRoundRect(1, 1, getWidth()-2, getHeight()/3, 19, 19);
+                
+                g2.setColor(Colors.BORDER_LIGHT);
+                g2.setStroke(new BasicStroke(1.0f));
+                g2.drawRoundRect(0, 0, getWidth()-1, getHeight()-1, 20, 20);
+                
+                g2.dispose();
+            }
+        };
+        right.setBorder(new EmptyBorder(25, 25, 25, 25));
+        right.setOpaque(false);
 
         JLabel title = new JLabel(Settings.GRID_TITLE);
-        title.setFont(Settings.BIG_FONT);
+        title.setFont(new Font("SF Pro Display", Font.BOLD, 24));
         title.setHorizontalAlignment(SwingConstants.CENTER);
         title.setForeground(Colors.PURPLE);
 
@@ -322,7 +417,7 @@ public class MainApp extends JFrame {
         });
 
         JLabel info = new JLabel(Settings.GRID_INFO);
-        info.setFont(Settings.TINY_FONT);
+        info.setFont(new Font("SF Pro Display", Font.PLAIN, 12));
         info.setForeground(Colors.TEXT_LIGHT);
         info.setHorizontalAlignment(SwingConstants.CENTER);
 
@@ -337,7 +432,8 @@ public class MainApp extends JFrame {
     private JLabel makeIcon() {
         try {
             ImageIcon icon = new ImageIcon(Settings.APP_ICON_PATH);
-            Image scaled = icon.getImage().getScaledInstance(Settings.ICON_SIZE_SMALL, Settings.ICON_SIZE_SMALL, Image.SCALE_SMOOTH);
+            Image scaled = icon.getImage().getScaledInstance(Settings.ICON_SIZE_SMALL, Settings.ICON_SIZE_SMALL,
+                    Image.SCALE_SMOOTH);
             ImageIcon newIcon = new ImageIcon(scaled);
             return new JLabel(newIcon);
         } catch (Exception e) {
@@ -394,6 +490,7 @@ public class MainApp extends JFrame {
         UIManager.put("ComboBox.background", Colors.BG_INPUT);
         UIManager.put("ComboBox.foreground", Colors.TEXT_DARK);
     }
+
     // รีเซ็ตการเลือกไฟล์
     private void resetFileChooser() {
         UIManager.put("FileChooser.background", null);
@@ -445,13 +542,13 @@ public class MainApp extends JFrame {
 
     private void updateButtonDisplay() {
         buttonPanel.removeAll();
-        
+
         if (hasData()) {
             buttonPanel.add(clearButton);
         } else {
             buttonPanel.add(loadButton);
         }
-        
+
         buttonPanel.revalidate();
         buttonPanel.repaint();
     }
@@ -465,7 +562,7 @@ public class MainApp extends JFrame {
     }
 
     // ออกจากโปรแกรม
-    private void exitApp(){
+    private void exitApp() {
         UIManager.put("OptionPane.background", Colors.BG_MAIN);
         UIManager.put("Panel.background", Colors.BG_MAIN);
         UIManager.put("OptionPane.messageForeground", Colors.TEXT_DARK);
@@ -479,8 +576,7 @@ public class MainApp extends JFrame {
                 Settings.EXIT_MSG,
                 Settings.EXIT_TITLE,
                 JOptionPane.YES_NO_OPTION,
-                JOptionPane.QUESTION_MESSAGE
-        );
+                JOptionPane.QUESTION_MESSAGE);
 
         if (result == JOptionPane.YES_OPTION) {
             System.exit(0);
