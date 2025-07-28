@@ -124,12 +124,12 @@ public class Display {
         nameLabel.setForeground(Colors.TEXT_DARK);
         nameLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 
-        JLabel idLabel = new JLabel("รหัสนิสิต: " + id, SwingConstants.CENTER);
+        JLabel idLabel = new JLabel("Studant ID: " + id, SwingConstants.CENTER);
         idLabel.setFont(new Font("SF Pro Display", Font.PLAIN, 13));
         idLabel.setForeground(Colors.TEXT_LIGHT);
         idLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 
-        JLabel jobLabel = new JLabel("ตำแหน่ง: " + job, SwingConstants.CENTER);
+        JLabel jobLabel = new JLabel("Post: " + job, SwingConstants.CENTER);
         jobLabel.setFont(new Font("SF Pro Display", Font.PLAIN, 13));
         jobLabel.setForeground(Colors.PURPLE);
         jobLabel.setAlignmentX(Component.CENTER_ALIGNMENT);

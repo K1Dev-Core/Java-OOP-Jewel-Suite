@@ -85,17 +85,17 @@ public class Settings {
     public static final String LANG_WARNING7 = "Incorrect information";
 
     //MEMBER1
-    public static final String MEMBER1 = "วชิรวิทย์ วงค์แสง";
+    public static final String MEMBER1 = "Wachirawit Wongsaeng";
     public static final String ID1 = "67011212055";
     public static final String JOB1 = "Project Manager";
     public static final String IMG1 = "src/res/team/member_king.jpg";
     //MEMBER2
-    public static final String MEMBER2 = "ชินดนัย ภูหัดสวน";
+    public static final String MEMBER2 = "Chindanai Phuhatsuan";
     public static final String ID2 = "67011212026";
     public static final String JOB2 = "Lead Developer";
     public static final String IMG2 = "src/res/team/member2.jpg";
     //MEMBER3
-    public static final String MEMBER3= "นางสาวเศรณี ภูนาโพธิ์";
+    public static final String MEMBER3= "Seranee Punapo";
     public static final String ID3 = "67011212143";
     public static final String JOB3 = "UI/UX Designer";
     public static final String IMG3 = "src/res/team/member_mint.jpg";
