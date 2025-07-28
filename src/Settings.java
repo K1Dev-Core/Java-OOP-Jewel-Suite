@@ -25,6 +25,10 @@ public class Settings {
     //icon
     public static final String APP_ICON_PATH = "src/res/icon.png";
     public static final int ICON_SIZE_SMALL = 96;
+    public static final String ICON_BTN_CALC = "src/res/icons/synergy.png";
+    public static final String ICON_BTN_LOAD = "src/res/icons/folder.png";
+    public static final String ICON_BTN_CLEAR = "src/res/icons/clear-format.png";
+    
 
     //TOP
     public static final String APP_TITLE = "Jewel Suite";

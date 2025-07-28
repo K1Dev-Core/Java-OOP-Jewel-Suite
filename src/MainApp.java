@@ -93,10 +93,10 @@ public class MainApp extends JFrame {
         JPanel right = new JPanel(new FlowLayout(FlowLayout.RIGHT));
         right.setOpaque(false);
 
-        JButton about = ButtonHelper.createButton(Settings.BTN_ABOUT, Colors.ORANGE, 100, 45);
+        JButton about = ButtonHelper.createButton(Settings.BTN_ABOUT, Colors.ORANGE, 100, 45, "src/res/icons/about.png");
         about.addActionListener(e -> Display.showAbout(this));
 
-        JButton exit = ButtonHelper.createButton(Settings.BTN_EXIT, Colors.DANGER_RED, 100, 45);
+        JButton exit = ButtonHelper.createButton(Settings.BTN_EXIT, Colors.DANGER_RED, 100, 45, "src/res/icons/exit.png");
         exit.addActionListener(e -> exitApp());
 
         right.add(about);
@@ -174,18 +174,18 @@ public class MainApp extends JFrame {
                 new EmptyBorder(12, 18, 12, 18)
         ));
 
-        JButton calc = ButtonHelper.createButton(Settings.BTN_CALC, Colors.BLUE, 280, 50);
+        JButton calc = ButtonHelper.createButton(Settings.BTN_CALC, Colors.BLUE, 280, 50, Settings.ICON_BTN_CALC);
         calc.setMaximumSize(new Dimension(280, 50));
         calc.setAlignmentX(Component.LEFT_ALIGNMENT);
         calc.addActionListener(e -> calculate());
 
 
-        loadButton = ButtonHelper.createButton(Settings.BTN_LOAD, Colors.SUCCESS_GREEN, 280, 50);
+        loadButton = ButtonHelper.createButton(Settings.BTN_LOAD, Colors.SUCCESS_GREEN, 280, 50, Settings.ICON_BTN_LOAD);
         loadButton.setMaximumSize(new Dimension(280, 50));
         loadButton.setAlignmentX(Component.LEFT_ALIGNMENT);
         loadButton.addActionListener(e -> openFile());
 
-        clearButton = ButtonHelper.createButton(Settings.BTN_CLEAR, Colors.DANGER_RED, 280, 50);
+        clearButton = ButtonHelper.createButton(Settings.BTN_CLEAR, Colors.DANGER_RED, 280, 50,Settings.ICON_BTN_CLEAR);
         clearButton.setMaximumSize(new Dimension(280, 50));
         clearButton.setAlignmentX(Component.LEFT_ALIGNMENT);
         clearButton.addActionListener(e -> clearFile());

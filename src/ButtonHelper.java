@@ -3,11 +3,16 @@ import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.File;
 
 public class ButtonHelper {
 
     public static JButton createButton(String text, Color bgColor, int width, int height) {
-        return new CustomButton(text, bgColor, width, height);
+        return new CustomButton(text, bgColor, width, height, null);
+    }
+
+    public static JButton createButton(String text, Color bgColor, int width, int height, String iconPath) {
+        return new CustomButton(text, bgColor, width, height, iconPath);
     }
 
     private static class CustomButton extends JButton {
@@ -15,10 +20,26 @@ public class ButtonHelper {
         private boolean isPressed = false;
         private float shadowAlpha = 0.3f;
         private Color bgColor;
+        private ImageIcon buttonIcon;
 
-        public CustomButton(String text, Color bgColor, int width, int height) {
+        public CustomButton(String text, Color bgColor, int width, int height, String iconPath) {
             super(text);
             this.bgColor = bgColor;
+            
+            // Load icon if path is provided
+            if (iconPath != null && new File(iconPath).exists()) {
+                try {
+                    ImageIcon originalIcon = new ImageIcon(iconPath);
+                    Image scaledImage = originalIcon.getImage().getScaledInstance(18, 18, Image.SCALE_SMOOTH);
+                    buttonIcon = new ImageIcon(scaledImage);
+                    setIcon(buttonIcon);
+                    setHorizontalTextPosition(SwingConstants.RIGHT);
+                    setIconTextGap(10);
+                } catch (Exception e) {
+                    // If icon loading fails, continue without icon
+                    buttonIcon = null;
+                }
+            }
 
             setPreferredSize(new Dimension(width, height));
             setFont(new Font("Segoe UI", Font.BOLD, 13));
