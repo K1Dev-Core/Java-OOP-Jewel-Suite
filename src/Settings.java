@@ -92,7 +92,7 @@ public class Settings {
     public static final String MEMBER3= "นางสาวเศรณี ภูนาโพธิ์";
     public static final String ID3 = "67011212143";
     public static final String JOB3 = "UI/UX Designer";
-    public static final String IMG3 = "src/res/team/member3.png";
+    public static final String IMG3 = "src/res/team/member_mint.jpg";
 
     //GridUI
     public static final String INFO =
