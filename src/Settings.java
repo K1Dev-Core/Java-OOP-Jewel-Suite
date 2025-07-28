@@ -28,6 +28,7 @@ public class Settings {
 
     //TOP
     public static final String APP_TITLE = "Jewel Suite";
+    public static final String APP_VERSION = "v1.0.0";
     public static final String BTN_ABOUT = "About";
     public static final String BTN_CLOSE_ABOUT = "CLOSE";
     public static final String BTN_EXIT = "Exit";
@@ -82,7 +83,7 @@ public class Settings {
     public static final String MEMBER1 = "วชิรวิทย์ วงค์แสง";
     public static final String ID1 = "67011212055";
     public static final String JOB1 = "Project Manager";
-    public static final String IMG1 = "src/res/team/member1.png";
+    public static final String IMG1 = "src/res/team/member_king.jpg";
     //MEMBER2
     public static final String MEMBER2 = "ชินดนัย ภูหัดสวน";
     public static final String ID2 = "67011212026";
@@ -107,6 +108,6 @@ public class Settings {
     public static final String GAS3 = "Too Much Gas";
 
     //showAbout
-    public static final String ABOUT_TITLE = "BY C++ TEAM";
-    public static final String ABOUT_DISTRIBUTION = "Gas distribution simulation system";
+    public static final String ABOUT_TITLE = "Gas distribution simulation system ";
+    public static final String ABOUT_DISTRIBUTION = "By C++ TEAM";
 }

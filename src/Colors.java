@@ -21,7 +21,7 @@ public class Colors {
 
 
     public static final Color TEXT_DARK = DARK_GRAY;
-    public static final Color TEXT_LIGHT = new Color(120, 120, 120);          // Slightly lighter than DARK_GRAY
+    public static final Color TEXT_LIGHT = new Color(120, 120, 120);
 
 
     public static final Color RED = ORANGE_PRIMARY;

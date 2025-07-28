@@ -4,7 +4,7 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.*;
 import java.io.File;
-
+// คลาสแม่ MainApp สําหรับการจัดการหลักของโปรแกรม
 public class MainApp extends JFrame {
 
     private DataFile data;
@@ -16,6 +16,7 @@ public class MainApp extends JFrame {
     private JButton clearButton;
     private JPanel buttonPanel;
 
+    // สร้างโปรแกรม
     public MainApp() {
         setupLook();
         data = new DataFile();
@@ -25,6 +26,7 @@ public class MainApp extends JFrame {
         setVisible(true);
     }
 
+    // ตั้งค่าการแสดงผล
     private void setupLook() {
         try {
             UIManager.setLookAndFeel(new FlatLightLaf());
@@ -33,6 +35,7 @@ public class MainApp extends JFrame {
         }
     }
 
+    // ตั้งค่าหน้าต่าง หลัก
     private void setupWindow() {
         setTitle(Settings.APP_TITLE);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -42,6 +45,7 @@ public class MainApp extends JFrame {
         setUndecorated(Settings.WINDOW_MENU);
         getContentPane().setBackground(Colors.BG_MAIN);
     }
+
 
     private void makeContent() {
         JPanel main = new JPanel(new BorderLayout());
@@ -54,6 +58,7 @@ public class MainApp extends JFrame {
         setContentPane(main);
     }
 
+    // สร้างแถบบน
     private void makeTopBar(JPanel parent) {
         JPanel top = new JPanel(new BorderLayout());
         top.setBorder(new EmptyBorder(20, 25, 20, 25));
@@ -71,9 +76,19 @@ public class MainApp extends JFrame {
         title.setFont(Settings.BIG_FONT);
         title.setForeground(Colors.BLUE);
 
+        JLabel version = new JLabel(Settings.APP_VERSION);
+        version.setFont(Settings.TINY_FONT);
+        version.setForeground(Colors.TEXT_LIGHT);
+
+        JPanel titlePanel = new JPanel();
+        titlePanel.setLayout(new BoxLayout(titlePanel, BoxLayout.Y_AXIS));
+        titlePanel.setOpaque(false);
+        titlePanel.add(title);
+        titlePanel.add(version);
+
         left.add(icon);
         left.add(Box.createHorizontalStrut(10));
-        left.add(title);
+        left.add(titlePanel);
 
         JPanel right = new JPanel(new FlowLayout(FlowLayout.RIGHT));
         right.setOpaque(false);
@@ -93,6 +108,7 @@ public class MainApp extends JFrame {
         parent.add(top, BorderLayout.NORTH);
     }
 
+
     private void makeMainArea(JPanel parent) {
         JPanel middle = new JPanel(new BorderLayout(25, 25));
         middle.setOpaque(false);
@@ -103,7 +119,7 @@ public class MainApp extends JFrame {
 
         parent.add(middle, BorderLayout.CENTER);
     }
-
+    // สร้างแถบซ้าย
     private void makeLeftPanel(JPanel parent) {
         JPanel left = new JPanel();
         left.setLayout(new BoxLayout(left, BoxLayout.Y_AXIS));
@@ -135,6 +151,7 @@ public class MainApp extends JFrame {
         parent.add(left, BorderLayout.WEST);
     }
 
+    // สร้างแถบอินพุต
     private JPanel makeInputArea() {
         JPanel panel = new JPanel();
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
@@ -162,7 +179,7 @@ public class MainApp extends JFrame {
         calc.setAlignmentX(Component.LEFT_ALIGNMENT);
         calc.addActionListener(e -> calculate());
 
-        // Create buttons but don't add them yet
+
         loadButton = ButtonHelper.createButton(Settings.BTN_LOAD, Colors.SUCCESS_GREEN, 280, 50);
         loadButton.setMaximumSize(new Dimension(280, 50));
         loadButton.setAlignmentX(Component.LEFT_ALIGNMENT);
@@ -173,7 +190,7 @@ public class MainApp extends JFrame {
         clearButton.setAlignmentX(Component.LEFT_ALIGNMENT);
         clearButton.addActionListener(e -> clearFile());
 
-        // Create a panel for dynamic button switching
+
         buttonPanel = new JPanel();
         buttonPanel.setLayout(new BoxLayout(buttonPanel, BoxLayout.Y_AXIS));
         buttonPanel.setOpaque(false);
@@ -191,6 +208,7 @@ public class MainApp extends JFrame {
         return panel;
     }
 
+    // สร้างแสดงลำดับแก๊ส
     private JPanel makeLegendArea() {
         JPanel panel = new JPanel();
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
@@ -237,6 +255,7 @@ public class MainApp extends JFrame {
         return panel;
     }
 
+    // สร้างแสดงผล
     private JPanel makeResultArea() {
         JPanel panel = new JPanel();
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
@@ -266,6 +285,7 @@ public class MainApp extends JFrame {
         return panel;
     }
 
+    // สร้างแถบขวา
     private void makeRightPanel(JPanel parent) {
         JPanel right = new JPanel(new BorderLayout());
         right.setBorder(BorderFactory.createCompoundBorder(
@@ -313,6 +333,7 @@ public class MainApp extends JFrame {
         parent.add(right, BorderLayout.CENTER);
     }
 
+    // สร้างไอคอน
     private JLabel makeIcon() {
         try {
             ImageIcon icon = new ImageIcon(Settings.APP_ICON_PATH);
@@ -330,6 +351,7 @@ public class MainApp extends JFrame {
         return data.getRows() > 0 && data.getCols() > 0;
     }
 
+    // เปิดไฟล์
     private void openFile() {
         setupFileChooser();
 
@@ -345,7 +367,7 @@ public class MainApp extends JFrame {
                 updateDisplay();
                 statusLabel.setText(Settings.STATUS_LOAD + file.getName());
                 statusLabel.setForeground(Colors.SUCCESS);
-             
+
             } else {
                 statusLabel.setText(Settings.STATUS_FAIL);
                 statusLabel.setForeground(Colors.DANGER);
@@ -356,6 +378,7 @@ public class MainApp extends JFrame {
         resetFileChooser();
     }
 
+    // ตั้งค่าการเลือกไฟล์ ปรับสีคอมโพเนนต์ ที่สร้างจาก UIManager swing
     private void setupFileChooser() {
         UIManager.put("FileChooser.background", Colors.BG_MAIN);
         UIManager.put("Panel.background", Colors.BG_MAIN);
@@ -371,7 +394,7 @@ public class MainApp extends JFrame {
         UIManager.put("ComboBox.background", Colors.BG_INPUT);
         UIManager.put("ComboBox.foreground", Colors.TEXT_DARK);
     }
-
+    // รีเซ็ตการเลือกไฟล์
     private void resetFileChooser() {
         UIManager.put("FileChooser.background", null);
         UIManager.put("Panel.background", null);
@@ -388,6 +411,7 @@ public class MainApp extends JFrame {
         UIManager.put("ComboBox.foreground", null);
     }
 
+    // คํานวณ
     private void calculate() {
         if (!hasData()) {
             Display.showMessage(this, Settings.LANG_WARNING, Settings.LANG_WARNING2, JOptionPane.WARNING_MESSAGE);
@@ -409,6 +433,7 @@ public class MainApp extends JFrame {
         }
     }
 
+    // เคลียร์
     private void clearFile() {
         data.clearData();
         waterInput.setText(String.valueOf(Settings.DEFAULT_FLUID));
@@ -431,6 +456,7 @@ public class MainApp extends JFrame {
         buttonPanel.repaint();
     }
 
+    // อัพเดทการแสดงผล
     private void updateDisplay() {
         double total = data.getTotalVolume();
         totalLabel.setText(String.format(Settings.TOTAL_GAS, total));
@@ -438,6 +464,7 @@ public class MainApp extends JFrame {
         updateButtonDisplay();
     }
 
+    // ออกจากโปรแกรม
     private void exitApp(){
         UIManager.put("OptionPane.background", Colors.BG_MAIN);
         UIManager.put("Panel.background", Colors.BG_MAIN);
@@ -459,6 +486,7 @@ public class MainApp extends JFrame {
             System.exit(0);
         }
 
+        // รีเซ็ตการแสดงผล UIManager swing
         UIManager.put("OptionPane.background", null);
         UIManager.put("Panel.background", null);
         UIManager.put("OptionPane.messageForeground", null);
@@ -468,6 +496,7 @@ public class MainApp extends JFrame {
         UIManager.put("Button.border", null);
     }
 
+    // รัน
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
             new MainApp();

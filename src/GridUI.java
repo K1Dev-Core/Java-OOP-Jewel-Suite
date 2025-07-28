@@ -27,10 +27,9 @@ public class GridUI extends JPanel {
 
         setOpaque(true);
         setBackground(Colors.BG_PANEL);
-        setLayout(null); // Use absolute positioning for tooltip
+        setLayout(null);
         updateSize();
-        
-        // Create tooltip label
+
         tooltipLabel = new JLabel();
         tooltipLabel.setFont(new Font("Tahoma", Font.PLAIN, 11));
         tooltipLabel.setForeground(Colors.TEXT_DARK);
@@ -145,11 +144,10 @@ public class GridUI extends JPanel {
         
         tooltipLabel.setText(tooltipText);
         
-        // Calculate tooltip position
+
         int tooltipX = mx + 15;
         int tooltipY = my - 10;
         
-        // Adjust if tooltip goes outside panel bounds
         Dimension tooltipSize = tooltipLabel.getPreferredSize();
         if (tooltipX + tooltipSize.width > getWidth()) {
             tooltipX = mx - tooltipSize.width - 15;
@@ -205,13 +203,12 @@ public class GridUI extends JPanel {
                 g2.setColor(cellColor);
                 g2.fillRect(x, y, Settings.CELL_DRAW-2, Settings.CELL_DRAW-2);
 
-                // Draw hover effect
+
                 if (r == hoverRow && c == hoverCol && hoverAlpha > 0) {
                     Color hoverColor = new Color(255, 255, 255, (int)(hoverAlpha * 80));
                     g2.setColor(hoverColor);
                     g2.fillRect(x, y, Settings.CELL_DRAW-2, Settings.CELL_DRAW-2);
                     
-                    // Add glow effect
                     Color glowColor = new Color(255, 255, 255, (int)(hoverAlpha * 120));
                     g2.setColor(glowColor);
                     g2.setStroke(new BasicStroke(2.0f));
