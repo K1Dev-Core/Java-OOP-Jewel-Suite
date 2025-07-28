@@ -79,8 +79,25 @@ docs/
 
 ## การติดตั้งและรัน
 
+### วิธีง่าย ๆ (Windows)
 1. ตรวจสอบว่ามี Java JDK 8+ ติดตั้งแล้ว
-2. Compile โปรเจค: `javac -cp "lib/*:src" src/*.java`
-3. รันแอปพลิเคชัน: `java -cp "lib/*:src" MainApp`
+2. รันไฟล์ `build-and-run.bat` (คอมไพล์และรันในคำสั่งเดียว)
 
-หรือใช้ IDE เช่น IntelliJ IDEA หรือ Eclipse เพื่อเปิดและรันโปรเจค
+### วิธีแบบแยกขั้นตอน
+1. คอมไพล์: รันไฟล์ `compile.bat`
+2. รันโปรแกรม: รันไฟล์ `run.bat`
+
+### วิธีแบบ Manual
+1. Compile โปรเจค: `javac -cp "lib/*" -d out src/*.java`
+2. รันแอปพลิเคชัน: `java -cp "lib/*;out" MainApp`
+
+### ใช้ IDE (IntelliJ IDEA)
+1. เปิดโปรเจคด้วย IntelliJ IDEA
+2. **ติดตั้ง Library:**
+   - คลิกขวาที่โฟลเดอร์ `lib`
+   - เลือก **"Add as Library..."**
+   - กด **OK** เพื่อเพิ่ม library เข้าโปรเจค
+3. รัน MainApp.java
+
+### ใช้ Eclipse
+เปิดโปรเจคด้วย Eclipse แล้วรัน MainApp.java
