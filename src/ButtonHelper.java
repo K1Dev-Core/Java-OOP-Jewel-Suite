@@ -63,6 +63,7 @@ public class ButtonHelper {
                 @Override
                 public void mousePressed(MouseEvent e) {
                     isPressed = true;
+                    SoundPlayer.getInstance().playClickSound();
                     repaint();
                 }
 
