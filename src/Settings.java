@@ -14,7 +14,7 @@ public class Settings {
     public static final int WIN_W = 1350;
     public static final int WIN_H = 800;
     public static final int CELL_DRAW = 40;
-    public static final Boolean WINDOW_MENU = true;
+    public static final Boolean WINDOW_MENU = false;
 
     //Font and FontSize
     public static final Font BIG_FONT = new Font("Tahoma", Font.BOLD, 26);
@@ -29,6 +29,8 @@ public class Settings {
     public static final String ICON_BTN_LOAD = "src/res/icons/folder.png";
     public static final String ICON_BTN_CLEAR = "src/res/icons/clear-format.png";
     public static final String ICON_BTN_ABOUT = "";
+    public static final String ICON_APP = "./src/res/icon2.png";
+
     
 
     //TOP

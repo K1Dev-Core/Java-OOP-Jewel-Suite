@@ -21,10 +21,12 @@ public class MainApp extends JFrame {
     public MainApp() {
         setupLook();            // ตั้งค่าธีม UI
         data = new DataFile();  // สร้างอ็อบเจ็กต์เก็บข้อมูล
+        makeIconAPP();          //ตั้งค่าiconAPP
         setupWindow();          // สร้างหน้าต่างหลัก (JFrame)
         makeContent();          // ใส่เนื้อหาภายในหน้าต่าง
         updateDisplay();        // อัปเดตผลการแสดงผลใน Grid
         setVisible(true);       // แสดงหน้าต่าง
+
     }
 
     // ตั้งค่าการแสดงผล
@@ -591,6 +593,13 @@ public class MainApp extends JFrame {
         UIManager.put("Button.foreground", null);
         UIManager.put("Button.border", null);
     }
+
+    //เปลี่ยนIconของApp แต่ต้องเอาภาพ 32 x 32 หรือ 64 x64
+    private void makeIconAPP() {
+        ImageIcon icon = new ImageIcon(Settings.ICON_APP);
+        setIconImage(icon.getImage());
+    }
+
 
     // รัน
     public static void main(String[] args) {
