@@ -8,29 +8,29 @@ import java.io.File;
 // คลาสแม่ MainApp สําหรับการจัดการหลักของโปรแกรม
 public class MainApp extends JFrame {
 
-    private DataFile data;
-    private GridUI grid;
-    private JTextField waterInput;
-    private JLabel totalLabel;
-    private JLabel statusLabel;
-    private JButton loadButton;
-    private JButton clearButton;
-    private JPanel buttonPanel;
+    private DataFile data;      // ตัวแปรจัดเก็บข้อมูลหลักที่อ่านจากไฟล์
+    private GridUI grid;        // Panel ที่แสดง Grid ข้อมูล
+    private JTextField waterInput;  // ช่องกรอกค่าปริมาณ
+    private JLabel totalLabel;      // Label แสดงผลรวมแก๊ส
+    private JLabel statusLabel;     // Label แสดงสถานะ (โหลดไฟล์สำเร็จ/ล้มเหลว ฯลฯ)
+    private JButton loadButton;     // ปุ่มโหลดไฟล์
+    private JButton clearButton;    // ปุ่มล้างข้อมูล
+    private JPanel buttonPanel;     // Panel สำหรับใส่ปุ่ม load/clear แล้วแต่สถานะ
 
     // สร้างโปรแกรม
     public MainApp() {
-        setupLook();
-        data = new DataFile();
-        setupWindow();
-        makeContent();
-        updateDisplay();
-        setVisible(true);
+        setupLook();            // ตั้งค่าธีม UI
+        data = new DataFile();  // สร้างอ็อบเจ็กต์เก็บข้อมูล
+        setupWindow();          // สร้างหน้าต่างหลัก (JFrame)
+        makeContent();          // ใส่เนื้อหาภายในหน้าต่าง
+        updateDisplay();        // อัปเดตผลการแสดงผลใน Grid
+        setVisible(true);       // แสดงหน้าต่าง
     }
 
     // ตั้งค่าการแสดงผล
     private void setupLook() {
         try {
-            UIManager.setLookAndFeel(new FlatLightLaf());
+            UIManager.setLookAndFeel(new FlatLightLaf());   // ตั้งค่าธีม UI โดยใช้ FlatLightLaf
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -40,11 +40,11 @@ public class MainApp extends JFrame {
     private void setupWindow() {
         setTitle(Settings.APP_TITLE);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setSize(Settings.WIN_W, Settings.WIN_H);
+        setSize(Settings.WIN_W, Settings.WIN_H);    // ขนาดหน้าต่าง
 
-        setLocationRelativeTo(null);
-        setResizable(true);
-        setUndecorated(Settings.WINDOW_MENU);
+        setLocationRelativeTo(null);      // เปิดตรงกลางหน้าจอ
+        setResizable(true);                // ปรับขนาดได้
+        setUndecorated(Settings.WINDOW_MENU);   // ถ้า true จะไม่มีแถบ Title bar
         
         JPanel backgroundPanel = new JPanel() {
             @Override
@@ -65,14 +65,14 @@ public class MainApp extends JFrame {
         backgroundPanel.setLayout(new BorderLayout());
         setContentPane(backgroundPanel);
     }
-
+    // Panel หลักของโปรแกรม (วางซ้าย-ขวา)
     private void makeContent() {
         JPanel main = new JPanel(new BorderLayout());
-        main.setBorder(new EmptyBorder(25, 25, 25, 25));
-        main.setOpaque(false);
+        main.setBorder(new EmptyBorder(25, 25, 25, 25));    // กำหนดขอบรอบ
+        main.setOpaque(false);  // โปร่งใส
 
-        makeTopBar(main);
-        makeMainArea(main);
+        makeTopBar(main);   // ส่วนหัว
+        makeMainArea(main); // ส่วนเนื้อหาหลัก (ซ้าย/ขวา)
 
         getContentPane().add(main);
     }
@@ -84,13 +84,13 @@ public class MainApp extends JFrame {
             protected void paintComponent(Graphics g) {
                 Graphics2D g2 = (Graphics2D) g.create();
                 g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-                
+                // สีพื้นหลัง Panel
                 g2.setColor(Colors.BG_PANEL);
                 g2.fillRoundRect(0, 0, getWidth(), getHeight(), 20, 20);
                 
                 g2.setColor(new Color(255, 255, 255, 60));
                 g2.fillRoundRect(1, 1, getWidth()-2, getHeight()/2, 19, 19);
-                
+                // เส้นขอบ
                 g2.setColor(Colors.BORDER_LIGHT);
                 g2.setStroke(new BasicStroke(1.0f));
                 g2.drawRoundRect(0, 0, getWidth()-1, getHeight()-1, 20, 20);
@@ -100,12 +100,12 @@ public class MainApp extends JFrame {
         };
         top.setBorder(new EmptyBorder(20, 25, 20, 25));
         top.setOpaque(false);
-
+        // ----------- ส่วนซ้ายของแถบบน (แสดงไอคอน + ชื่อแอป)
         JPanel left = new JPanel(new FlowLayout(FlowLayout.LEFT));
         left.setOpaque(false);
 
-        JLabel icon = makeIcon();
-        JLabel title = new JLabel(Settings.APP_TITLE);
+        JLabel icon = makeIcon();       // ไอคอนโปรแกรม
+        JLabel title = new JLabel(Settings.APP_TITLE);  // ชื่อโปรแกรม
         title.setFont(new Font("SF Pro Display", Font.BOLD, 28));
         title.setForeground(Colors.BLUE);
 
